@@ -1,2 +1,25 @@
 # tiktoktoe
 Michael &amp; Tammuz project
+
+### Checkpoint 1
+# Tammuz :
+From a panda DS extract the data to an sql DB  and push to git.
+
+# Michael :
+Implement the scraper with Selenium.
+Table1:
+  personID
+  following
+  follwers
+  likes by person
+  personBio
+Table2:
+  postID  
+  personID
+  likes
+  comments
+  forwards
+  postText
+  hashtags
+ 
+ # deadline : June Monday, 15
