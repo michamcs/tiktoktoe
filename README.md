@@ -2,6 +2,11 @@
 Michael &amp; Tammuz project
 
 ### Checkpoint 1
+# Additional To Do:
+  - copy notebook to pycharm
+  - add scrapping of comments
+  - add OOP / classes to code
+
 # Tammuz :
 From a panda DS extract the data to an sql DB  and push to git.
 
