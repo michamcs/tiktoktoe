@@ -9,10 +9,6 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
-chrome_options = webdriver.ChromeOptions()
-chrome_options.add_argument("user-agent='Applebot'")
-driver = webdriver.Chrome(r"./chromedriver", options=chrome_options)
-driver.get("https://www.tiktok.com/trending")
 
 
 # Scrolling
@@ -51,8 +47,9 @@ class tiktok_scrape():
         self.users = []
         self.posts = []
         self.chrome_options = webdriver.ChromeOptions()
+        # TODO add headless
         self.chrome_options.add_argument("user-agent='Applebot'")
-        self.driver = webdriver.Chrome(r"./chromedriver", options=chrome_options)
+        self.driver = webdriver.Chrome(r"./chromedriver", options=self.chrome_options)
         self.driver.get(url)
 
     def new_user(self, other_id):
@@ -62,7 +59,7 @@ class tiktok_scrape():
 
     def scroll(self, num_scrolls=3):
         # Get scroll height
-        last_height = driver.execute_script("return document.body.scrollHeight")
+        last_height = self.driver.execute_script("return document.body.scrollHeight")
         scroll_pause_time = 1
         while num_scrolls > 0:
             # Scroll down to bottom
@@ -70,12 +67,12 @@ class tiktok_scrape():
             # Wait to load page
             time.sleep(scroll_pause_time)
             # Calculate new scroll height and compare with last scroll height
-            new_height = driver.execute_script("return document.body.scrollHeight")
+            new_height = self.driver.execute_script("return document.body.scrollHeight")
             if new_height == last_height:
                 break  # infinit scroll, so this should never happen
             last_height = new_height
             num_scrolls -= 1
-            print(f"Scrolling for another {num_scrolls} seconds")
+            print(f"Scrolling for another {num_scrolls} times")
 
     def get_posts(self):
         # Picking elements
@@ -99,22 +96,22 @@ class tiktok_scrape():
             nb_comments = post.find_element_by_css_selector("[title^='comment']").text
             nb_shares = post.find_element_by_css_selector("[title^='share']").text
 
-            user = self.new_user(self, user_id)
+            user, user_index = self.new_user(user_id)
 
-            if not user[0]:
-                user[1] = self.get_users(self, user_id, main_window)
+            if not user:
+                user_index = self.get_users(user_id, main_window)
             else:
                 print("This user has already been seen before.............................")
             # Appending post info to post df
-            self.posts.append(tiktok_post(user[1], post_desc, song, nb_likes, nb_comments, nb_shares))
+            self.posts.append(tiktok_post(user_index, post_desc, song, nb_likes, nb_comments, nb_shares))
 
-    def get_users(self,user_id, main_window):
+    def get_users(self, user_id, main_window):
         # switching to the user page
         self.driver.execute_script("window.open('http://www.tiktok.com/@{}', 'new_window')".format(user_id))
-        WebDriverWait(driver, 10).until(EC.number_of_windows_to_be(2))
-        self.driver.switch_to.window(driver.window_handles[1])
+        WebDriverWait(self.driver, 10).until(EC.number_of_windows_to_be(2))
+        self.driver.switch_to.window(self.driver.window_handles[1])
         try:
-            WebDriverWait(driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "share-desc")))
+            WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "share-desc")))
         except TimeoutException:
             self.driver.close()
             self.driver.switch_to.window(main_window)
@@ -122,19 +119,19 @@ class tiktok_scrape():
 
         # getting the user info
         try:
-            user_desc = driver.find_element(By.CLASS_NAME, 'share-desc').text
+            user_desc = self.driver.find_element(By.CLASS_NAME, 'share-desc').text
         except NoSuchElementException:
             user_desc = ''
 
         try:
-            nb_followings = driver.find_element_by_css_selector("[title^='Followings']").text
+            nb_followings = self.driver.find_element_by_css_selector("[title^='Followings']").text
 
         except NoSuchElementException:
-            nb_followings = driver.find_element_by_css_selector("[title^='Following']").text
+            nb_followings = self.driver.find_element_by_css_selector("[title^='Following']").text
 
-        nb_followers = driver.find_element_by_css_selector("[title^='Followers']").text
+        nb_followers = self.driver.find_element_by_css_selector("[title^='Followers']").text
 
-        nb_likes = driver.find_element_by_css_selector("[title^='Likes']").text
+        nb_likes = self.driver.find_element_by_css_selector("[title^='Likes']").text
 
         # Appending user info to user df
         self.users.append(tiktok_user(user_id, user_desc, nb_followings, nb_followers, nb_likes))
@@ -146,10 +143,11 @@ class tiktok_scrape():
 
 def main():
     scrapping = tiktok_scrape()
-    scrapping.scroll(10)
+    scrapping.scroll(5)
     scrapping.get_posts()
     print(f'Got {len(scrapping.posts)} posts')
     print(f'Got {len(scrapping.users)} users')
+
 
 if __name__ == "__main__":
     main()
