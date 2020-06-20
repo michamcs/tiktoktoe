@@ -5,59 +5,94 @@ import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
-
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-
-# Scrolling
-# TODO: add failed user info attempts as empyt tiktok_user objects / maybe add a list of failed user attempts
-# so that we can later a fix that tries to access those user pages after an extended period of time
-
-class tiktok_user():
+class TiktokUser():
     def __init__(self, user_id, user_desc, nb_followings, nb_followers, nb_likes):
+        """
+        TiktokUser constructor
+        :param user_id: user_id
+        :param user_desc: short bio about the user
+        :param nb_followings: number of members the user follows
+        :param nb_followers: user's number of followers
+        :param nb_likes: user's number of likes
+        """
         self.user_id = user_id
         self.description = user_desc
         self.following = nb_followings
         self.followers = nb_followers
         self.likes = nb_likes
-    ## do we have user's actual name?
 
     def __repr__(self):
+        """
+        TiktokUser representation
+        :return: user_id
+        """
         return self.user_id
 
     def __eq__(self, other_id):
+        """
+        CLARIFICATION NEEDED
+        :param other_id:
+        :return:
+        """
         return self.user_id == other_id
 
-class tiktok_post():
+class TiktokPost():
     def __init__(self, user_id, post_desc, song, nb_likes, nb_comments, nb_shares):
-        self.user_id_index = user_id  # this is a the tiktok_user index
+        """
+        Tiktok Post constructor
+        :param user_id: post's creator user_id
+        :param post_desc: post description
+        :param song: post song
+        :param nb_likes: number of likes for the post
+        :param nb_comments: number of comments for the post
+        :param nb_shares: number of shares for the post
+        """
+        self.user_id_index = user_id  # this is a the TiktokUser index
         self.description = post_desc
         self.song = song
         self.likes = nb_likes
         self.comments = nb_comments
         self.shares = nb_shares
-        # do we have post_id?
         # later add each_comment as [] with each comment appended
 
 
-class tiktok_scrape():
+class TiktokScrape():
     def __init__(self, url="https://www.tiktok.com/trending"):
+        """
+        Scraper constructor
+        :param url: url to scrape
+        we define more options in the constructor such as users and posts arrays and scraper settings
+        """
         self.users = []
         self.posts = []
         self.chrome_options = webdriver.ChromeOptions()
-        # TODO add headless
+        # TODO add headless and set window size for the big scrapping
+        # self.chrome_options.add_argument("--headless")
+        # self.chrome_options.add_argument("window-size=1920,1080")
         self.chrome_options.add_argument("user-agent='Applebot'")
         self.driver = webdriver.Chrome(r"./chromedriver", options=self.chrome_options)
         self.driver.get(url)
 
     def new_user(self, other_id):
+        """
+        CLARIFICATION NEEDED
+        :param other_id:
+        :return:
+        """
         if other_id in self.users:
-            return True, self.users.index(other_id) # overcoming bug for first user at index 0
+            return True, self.users.index(other_id)  # overcoming bug for first user at index 0
         return False, -1
 
     def scroll(self, num_scrolls=3):
+        """
+        Scrolling over the page
+        :param num_scrolls: number of scrolls  # depends on the window size
+        :return: nothing
+        """
         # Get scroll height
         last_height = self.driver.execute_script("return document.body.scrollHeight")
         scroll_pause_time = 1
@@ -69,13 +104,16 @@ class tiktok_scrape():
             # Calculate new scroll height and compare with last scroll height
             new_height = self.driver.execute_script("return document.body.scrollHeight")
             if new_height == last_height:
-                break  # infinit scroll, so this should never happen
+                break  # infinite scroll, so this should never happen
             last_height = new_height
             num_scrolls -= 1
             print(f"Scrolling for another {num_scrolls} times")
 
     def get_posts(self):
-        # Picking elements
+        """
+        scrapping post elements
+        :return: nothing
+        """
         main_window = self.driver.current_window_handle
         items = self.driver.find_elements(By.CLASS_NAME, 'video-feed-item')
         i = 0
@@ -102,11 +140,16 @@ class tiktok_scrape():
                 user_index = self.get_users(user_id, main_window)
             else:
                 print("This user has already been seen before.............................")
-            # Appending post info to post df
-            self.posts.append(tiktok_post(user_index, post_desc, song, nb_likes, nb_comments, nb_shares))
+            # Appending post info to posts array
+            self.posts.append(TiktokPost(user_index, post_desc, song, nb_likes, nb_comments, nb_shares))
 
     def get_users(self, user_id, main_window):
-        # switching to the user page
+        """
+        Switching to the user page
+        :param user_id: user_id we want to switch to
+        :param main_window: trending windows for the fallback
+        :return: CLARIFICATION NEEDED
+        """
         self.driver.execute_script("window.open('http://www.tiktok.com/@{}', 'new_window')".format(user_id))
         WebDriverWait(self.driver, 10).until(EC.number_of_windows_to_be(2))
         self.driver.switch_to.window(self.driver.window_handles[1])
@@ -115,7 +158,7 @@ class tiktok_scrape():
         except TimeoutException:
             self.driver.close()
             self.driver.switch_to.window(main_window)
-            return -1 #meaning this
+            return -1  # meaning this
 
         # getting the user info
         try:
@@ -134,7 +177,7 @@ class tiktok_scrape():
         nb_likes = self.driver.find_element_by_css_selector("[title^='Likes']").text
 
         # Appending user info to user df
-        self.users.append(tiktok_user(user_id, user_desc, nb_followings, nb_followers, nb_likes))
+        self.users.append(TiktokUser(user_id, user_desc, nb_followings, nb_followers, nb_likes))
 
         # closing the user page
         self.driver.close()
@@ -142,7 +185,7 @@ class tiktok_scrape():
         return len(self.users)-1
 
 def main():
-    scrapping = tiktok_scrape()
+    scrapping = TiktokScrape()
     scrapping.scroll(5)
     scrapping.get_posts()
     print(f'Got {len(scrapping.posts)} posts')
