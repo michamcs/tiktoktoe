@@ -23,7 +23,7 @@ Explore the hidden metadata behind each post by scrapping from the most popular 
 
 ## Users
 Explore the metadata of each user by storing their
-  - personID
+  - userID
   - Numbers of users they're following
   - Number of follwers
   - Number of likes
@@ -36,10 +36,3 @@ Explore the metadata of each user by storing their
 <p align="center"><img src="images/scroll.gif" width="60%"></p>
 
 ### Technical stuff.. 
-# Additional To Do:
-  - add OOP / classes to code **STORED IN CLASSES
-Implement the scraper with Selenium.
-
-# Future work:
-- Add scrapping of comments
-- Sentiment analysis on text
