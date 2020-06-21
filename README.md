@@ -1,5 +1,5 @@
-# TikTokToe
-## Exploring metadata on TikTok - Michael &amp; Tammuz project
+# 🥁  TikTokToe  🥁
+## Exploring metadata on TikTok - Michael &amp; Tammuz project 👨🏻‍💻👨‍💻
 
 <center>TikTok is on amazing platform where individuals can upload highly entertaining videos like : 👇</center>
 
@@ -13,11 +13,16 @@
 pip install -r requirements.txt
 ```
 
-## Run
+## Usage
 
 ```bash
 python3 tiktoktoe_scrapping.py
 ```
+
+
+## 🔌 Third Party Plugins
+
+* [Selenium](https://selenium-python.readthedocs.io/) - provides a simple API to write functional/acceptance tests using Selenium WebDriver.
 
 
 ## Posts
