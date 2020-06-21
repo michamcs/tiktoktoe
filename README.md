@@ -16,7 +16,7 @@ Explore the hidden metadata behind each post by scrapping from the most popular 
   - Post's hashtags
   - Post's music/song name
 ![](images/tiktok3_3.jpg)
-<p align="center"><img src="images/tiktok3_3.jpg" width="30%"></p>
+<p align="center"><img src="images/tiktok3_3.jpg" width="50%"></p>
 
 
 ## Users
