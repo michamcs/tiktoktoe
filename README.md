@@ -1,4 +1,4 @@
-<strong align="center">TikTokToe 🥁<\strong> 
+# TikTokToe
 ## Exploring metadata on TikTok - Michael &amp; Tammuz project
 
 <center>TikTok is on amazing platform where individuals can upload highly entertaining videos like : 👇</center>
