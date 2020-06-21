@@ -1,5 +1,5 @@
 # TikTokToe
-## Exploring metadata on TikTok --- Michael &amp; Tammuz project
+## Exploring metadata on TikTok - Michael &amp; Tammuz project
 
 <center>TikTok is on amazing platform where individuals can upload highly entertaining videos like:</center>
 <p align="center"><img src="images/dancing.gif" width="30%"></p>
