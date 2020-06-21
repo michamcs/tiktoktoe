@@ -28,7 +28,8 @@ Explore the metadata of each user by storing their
 <p align="center"><img src="images/tiktok1.jpg" width="60%"></p>
 
 ## Scrolling
-![](images/scroll.gif =100x20)
+![](images/scroll.gif)
+<p align="center"><img src="images/scroll.gif" width="60%"></p>
 
 ### Technical stuff.. 
 # Additional To Do:
