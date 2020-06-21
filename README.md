@@ -1,5 +1,9 @@
 # 🥁  TikTokToe  🥁
 ## Exploring metadata on TikTok - Michael &amp; Tammuz project 👨🏻‍💻 👨‍💻
+TikTok scrapper in the scope of the TikTokToe project. First project of the Fellows program of ITC<br/>
+The following algorithm scrapes :<br/>
+  • Posts in the TikTok trending page<br/>
+  • User pages associated to each post<br/>
 
 ---
 
