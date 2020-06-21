@@ -1,0 +1,14 @@
+cycler==0.10.0
+geographiclib==1.50
+geopy==1.22.0
+kiwisolver==1.2.0
+matplotlib==3.2.1
+numpy==1.18.5
+pandas==1.0.4
+PyMySQL==0.9.3
+pyparsing==2.4.7
+python-dateutil==2.8.1
+pytz==2020.1
+selenium==3.141.0
+six==1.15.0
+urllib3==1.25.9
