@@ -15,7 +15,6 @@ Explore the hidden metadata behind each post by scrapping from the most popular 
   - Post's text
   - Post's hashtags
   - Post's music/song name
-![](images/tiktok3_3.jpg)
 <p align="center"><img src="images/tiktok3_3.jpg" width="50%"></p>
 
 
@@ -26,7 +25,8 @@ Explore the metadata of each user by storing their
   - Number of follwers
   - Number of likes
   - Bio text
-![](images/tiktok1.jpg =100x20)
+![](images/tiktok1.jpg)
+<p align="center"><img src="images/tiktok1.jpg" width="50%"></p>
 
 ## Scrolling
 ![](images/scroll.gif =100x20)
