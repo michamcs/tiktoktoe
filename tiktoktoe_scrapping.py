@@ -3,8 +3,8 @@ Authors: Michael Marcus & Tammuz Dubnov
 
 TikTok scrapper in the scope of the TikTokToe project. First project of the Fellows program of ITC
 The following algorithm scrapes :
- - the TikTok platform posts in the trending page
- - the user pages associated to the posts
+• Posts in the TikTok trending page
+• User pages associated to each post
 
 Created in June 2020
 """
