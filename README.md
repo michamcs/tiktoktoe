@@ -22,7 +22,7 @@ python3 tiktoktoe_scrapping.py
 ```
 
 ## 👨‍🎓 Classes
-<p align="center"><img src="images/classes.jpeg" width="30%"></p>
+<p align="center"><img src="images/classes.jpeg"></p>
 
 ## 🔌 Third Party Plugins
 
