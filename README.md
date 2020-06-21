@@ -3,7 +3,7 @@
 ### Michael &amp; Tammuz project
 
 TikTok is on amazing platform where individuals can upload highly entertaining videos like:
-![](images/dancing.gif)
+![](images/dancing.gif =100x20)
 
 ## Posts
 Explore the hidden metadata behind each post by scrapping from the most popular posts the: 
@@ -15,7 +15,7 @@ Explore the hidden metadata behind each post by scrapping from the most popular 
   - Post's text
   - Post's hashtags
   - Post's music/song name
-![](images/tiktok3_3.jpg)
+![](images/tiktok3_3.jpg =100x20)
 
 
 ## Users
@@ -25,10 +25,10 @@ Explore the metadata of each user by storing their
   - Number of follwers
   - Number of likes
   - Bio text
-![](images/tiktok1.jpg)
+![](images/tiktok1.jpg =100x20)
 
 ## Scrolling
-![](images/scroll.gif)
+![](images/scroll.gif =100x20)
 
 ### Technical stuff.. 
 # Additional To Do:
