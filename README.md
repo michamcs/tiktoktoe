@@ -3,7 +3,7 @@
 ### Michael &amp; Tammuz project
 
 TikTok is on amazing platform where individuals can upload highly entertaining videos like:
-<p align="center"><img src="images/dancing.gif" width="30%"></p>
+<p align="center"><img src="images/dancing.gif" style="border-radius: 35px;" width="30%"></p>
 
 ## Posts
 Explore the hidden metadata behind each post by scrapping from the most popular posts the: 
