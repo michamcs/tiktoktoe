@@ -1,5 +1,7 @@
 # 🥁  TikTokToe  🥁
-## Exploring metadata on TikTok - Michael &amp; Tammuz project 👨🏻‍💻👨‍💻
+## Exploring metadata on TikTok - Michael &amp; Tammuz project 👨🏻‍💻 👨‍💻
+
+---
 
 <center>TikTok is on amazing platform where individuals can upload highly entertaining videos like : 👇</center>
 
@@ -7,18 +9,20 @@
 
 ---
 
-## Install
+## 🛠  Install
 
 ```bash
 pip install -r requirements.txt
 ```
 
-## Usage
+## 🏃‍♂️  Usage
 
 ```bash
 python3 tiktoktoe_scrapping.py
 ```
 
+## 👨‍🎓 Classes
+<p align="center"><img src="images/classes.jpeg" width="30%"></p>
 
 ## 🔌 Third Party Plugins
 
