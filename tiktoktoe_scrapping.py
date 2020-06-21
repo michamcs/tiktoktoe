@@ -32,13 +32,13 @@ class TiktokUser():
         """
         return self.user_id
 
-    def __eq__(self, other_id):
+    def __eq__(self, user_id_to_check):
         """
-        CLARIFICATION NEEDED
-        :param other_id:
-        :return:
+        Defining equality
+        :param user_id_to_check: user_id we wnt to check
+        :return: Boolean
         """
-        return self.user_id == other_id
+        return self.user_id == user_id_to_check
 
 class TiktokPost():
     def __init__(self, user_id, post_desc, song, nb_likes, nb_comments, nb_shares):
@@ -77,14 +77,14 @@ class TiktokScrape():
         self.driver = webdriver.Chrome(r"./chromedriver", options=self.chrome_options)
         self.driver.get(url)
 
-    def new_user(self, other_id):
+    def check_new_user(self, user_id_to_check):
         """
-        CLARIFICATION NEEDED
-        :param other_id:
-        :return:
+        Checking if a user was already scrapped. If it is, we do not scrape is personal page again
+        :param user_id_to_check: user id we want to check
+        :return: Boolean
         """
-        if other_id in self.users:
-            return True, self.users.index(other_id)  # overcoming bug for first user at index 0
+        if user_id_to_check in self.users:
+            return True, self.users.index(user_id_to_check)  # overcoming bug for first user at index 0
         return False, -1
 
     def scroll(self, num_scrolls=3):
@@ -134,7 +134,7 @@ class TiktokScrape():
             nb_comments = post.find_element_by_css_selector("[title^='comment']").text
             nb_shares = post.find_element_by_css_selector("[title^='share']").text
 
-            user, user_index = self.new_user(user_id)
+            user, user_index = self.check_new_user(user_id)
 
             if not user:
                 user_index = self.get_users(user_id, main_window)
@@ -147,8 +147,8 @@ class TiktokScrape():
         """
         Switching to the user page
         :param user_id: user_id we want to switch to
-        :param main_window: trending windows for the fallback
-        :return: CLARIFICATION NEEDED
+        :param main_window: trending tiktok page windows for the fallback
+        :return: the new length of the users array
         """
         self.driver.execute_script("window.open('http://www.tiktok.com/@{}', 'new_window')".format(user_id))
         WebDriverWait(self.driver, 10).until(EC.number_of_windows_to_be(2))
