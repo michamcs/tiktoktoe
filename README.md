@@ -25,8 +25,7 @@ Explore the metadata of each user by storing their
   - Number of follwers
   - Number of likes
   - Bio text
-![](images/tiktok1.jpg)
-<p align="center"><img src="images/tiktok1.jpg" width="50%"></p>
+<p align="center"><img src="images/tiktok1.jpg" width="60%"></p>
 
 ## Scrolling
 ![](images/scroll.gif =100x20)
