@@ -1,6 +1,15 @@
 """
 Authors: Michael Marcus & Tammuz Dubnov
+
+TikTok scrapper in the scope of the TikTokToe project. First project of the Fellows program of ITC
+The following algorithm scrapes :
+ - the TikTok platform posts in the trending page
+ - the user pages associated to the posts
+
+Created in June 2020
 """
+
+# Imports
 import time
 from selenium import webdriver
 from selenium.webdriver.common.by import By
