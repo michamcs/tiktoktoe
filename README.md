@@ -12,6 +12,13 @@
 pip install -r requirements.txt
 ```
 
+## Run
+
+```bash
+python3 tiktoktoe_scrapping.py
+```
+
+
 ## Posts
 Explore the hidden metadata behind each post by scrapping from the most popular posts the: 
   - postID  
