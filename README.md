@@ -4,7 +4,7 @@
 
 TikTok is on amazing platform where individuals can upload highly entertaining videos like:
 ![](images/dancing.gif)
-<img src="images/dancing.gif" width="40%">
+<img src="images/dancing.gif" width="10%">
 
 ## Posts
 Explore the hidden metadata behind each post by scrapping from the most popular posts the: 
