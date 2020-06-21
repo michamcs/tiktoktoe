@@ -5,6 +5,8 @@
 TikTok is on amazing platform where individuals can upload highly entertaining videos like:
 <p align="center"><img src="images/dancing.gif" width="30%"></p>
 
+---
+
 ## Posts
 Explore the hidden metadata behind each post by scrapping from the most popular posts the: 
   - postID  
@@ -17,6 +19,7 @@ Explore the hidden metadata behind each post by scrapping from the most popular 
   - Post's music/song name
 <p align="center"><img src="images/tiktok3_3.jpg" width="50%"></p>
 
+---
 
 ## Users
 Explore the metadata of each user by storing their
@@ -27,8 +30,9 @@ Explore the metadata of each user by storing their
   - Bio text
 <p align="center"><img src="images/tiktok1.jpg" width="60%"></p>
 
+---
+
 ## Scrolling
-![](images/scroll.gif)
 <p align="center"><img src="images/scroll.gif" width="60%"></p>
 
 ### Technical stuff.. 
