@@ -1,4 +1,4 @@
-# <center>TikTokToe</center>
+<center>TikTokToe</center>
 ## Exploring metadata on TikTok
 ### Michael &amp; Tammuz project
 
