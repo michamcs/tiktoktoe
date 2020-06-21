@@ -3,7 +3,8 @@
 
 ---
 
-<center>TikTok is on amazing platform where individuals can upload highly entertaining videos like : 👇</center>
+TikTok is on amazing platform where individuals can upload highly entertaining videos like : 👇
+
 
 <p align="center"><img src="images/dancing.gif" width="30%"></p>
 
@@ -22,14 +23,14 @@ python3 tiktoktoe_scrapping.py
 ```
 
 ## 👨‍🎓 Classes
-<p align="center"><img src="images/classes.jpeg"></p>
+<p align="center"><img src="images/class.jpeg"></p>
 
 ## 🔌 Third Party Plugins
 
 * [Selenium](https://selenium-python.readthedocs.io/) - provides a simple API to write functional/acceptance tests using Selenium WebDriver.
 
 
-## Posts
+## 📫 Posts
 Explore the hidden metadata behind each post by scrapping from the most popular posts the: 
   - postID  
   - userID
@@ -43,7 +44,7 @@ Explore the hidden metadata behind each post by scrapping from the most popular 
 
 ---
 
-## Users
+## 👨‍👩‍👧‍👦 Users
 Explore the metadata of each user by storing their
   - userID
   - Numbers of users they're following
@@ -54,7 +55,5 @@ Explore the metadata of each user by storing their
 
 ---
 
-## Scrolling
+## 🤏 Scrolling
 <p align="center"><img src="images/scroll.gif" width="60%"></p>
-
-### Technical stuff.. 
