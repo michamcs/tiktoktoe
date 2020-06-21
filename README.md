@@ -1,31 +1,39 @@
-# tiktoktoe
-Michael &amp; Tammuz project
+# TikTokToe
+## Exploring metadata on TikTok
+### Michael &amp; Tammuz project
 
-### Checkpoint 1
-# Additional To Do:
-  - copy notebook to pycharm
-  - add scrapping of comments
-  - add OOP / classes to code
+TikTok is on amazing platform where individuals can upload highly entertaining videos like:
+![](images/dancing.gif)
 
-# Tammuz :
-From a panda DS extract the data to an sql DB  and push to git.
-
-# Michael :
-Implement the scraper with Selenium.
-Table1:
-  - personID
-  - following
-  - follwers
-  - likes by person
-  - personBio
-Table2:
+## Posts
+Explore the hidden metadata behind each post by scrapping from the most popular posts the: 
   - postID  
+  - userID
+  - Number of likes
+  - Nubmber of comments
+  - Number of shares
+  - Post's text
+  - Post's hashtags
+  - Post's music/song name
+![](images/tiktok3_3.jpg)
+
+
+## Users
+Explore the metadata of each user by storing their
   - personID
-  - likes
-  - comments
-  - forwards
-  - postText
-  - hashtags
-  - song name
- 
- # deadline : June Monday, 15
+  - Numbers of users they're following
+  - Number of follwers
+  - Number of likes
+  - Bio text
+![](images/tiktok1.jpg)
+
+
+
+### Technical stuff.. 
+# Additional To Do:
+  - add OOP / classes to code **STORED IN CLASSES
+Implement the scraper with Selenium.
+
+# Future work:
+- Add scrapping of comments
+- Sentiment analysis on text
