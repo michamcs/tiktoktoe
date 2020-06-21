@@ -27,7 +27,8 @@ Explore the metadata of each user by storing their
   - Bio text
 ![](images/tiktok1.jpg)
 
-
+## Scrolling
+![](images/scroll.gif)
 
 ### Technical stuff.. 
 # Additional To Do:
