@@ -6,6 +6,12 @@
 
 ---
 
+## Install
+
+```bash
+pip install -r requirements.txt
+```
+
 ## Posts
 Explore the hidden metadata behind each post by scrapping from the most popular posts the: 
   - postID  
