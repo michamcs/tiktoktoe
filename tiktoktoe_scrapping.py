@@ -11,6 +11,7 @@ Created in June 2020
 
 # Imports
 import time
+import argparse
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
@@ -118,7 +119,7 @@ class TiktokScrape():
             num_scrolls -= 1
             print(f"Scrolling for another {num_scrolls} times")
 
-    def get_posts(self):
+    def get_posts(self, scroll_profile=True):
         """
         scrapping post elements
         :return: nothing
@@ -145,9 +146,9 @@ class TiktokScrape():
 
             user, user_index = self.check_new_user(user_id)
 
-            if not user:
+            if not user and scroll_profile:
                 user_index = self.get_users(user_id, main_window)
-            else:
+            elif user and scroll_profile:
                 print("This user has already been seen before.............................")
             # Appending post info to posts array
             self.posts.append(TiktokPost(user_index, post_desc, song, nb_likes, nb_comments, nb_shares))
@@ -193,10 +194,18 @@ class TiktokScrape():
         self.driver.switch_to.window(main_window)
         return len(self.users)-1
 
+def define_parser():
+    """settings for the parser"""
+    parser = argparse.ArgumentParser(description='Settings for the TikTok Scrapper')
+    parser.add_argument("scroll_profile", choices=['Y', 'N'])
+    parser.add_argument("number_of_scrolls", type=int)
+    return parser.parse_args()
+
 def main():
+    args = define_parser()
     scrapping = TiktokScrape()
-    scrapping.scroll(5)
-    scrapping.get_posts()
+    scrapping.scroll(args.number_of_scrolls)
+    scrapping.get_posts(args.scroll_profile == 'Y')
     print(f'Got {len(scrapping.posts)} posts')
     print(f'Got {len(scrapping.users)} users')
 
