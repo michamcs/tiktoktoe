@@ -16,7 +16,7 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 
 
 class TiktokUser:
@@ -161,10 +161,10 @@ class TiktokScrape:
         :return: the new length of the users array
         """
         self.driver.execute_script("window.open('http://www.tiktok.com/@{}', 'new_window')".format(user_id))
-        WebDriverWait(self.driver, 10).until(EC.number_of_windows_to_be(2))
+        WebDriverWait(self.driver, 10).until(ec.number_of_windows_to_be(2))
         self.driver.switch_to.window(self.driver.window_handles[1])
         try:
-            WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "share-desc")))
+            WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.CLASS_NAME, "share-desc")))
         except TimeoutException:
             self.driver.close()
             self.driver.switch_to.window(main_window)
