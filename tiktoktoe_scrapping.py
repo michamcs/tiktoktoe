@@ -19,7 +19,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
 
 
-class TiktokUser():
+class TiktokUser:
     def __init__(self, user_id, user_desc, nb_followings, nb_followers, nb_likes):
         """
         TiktokUser constructor
@@ -50,7 +50,7 @@ class TiktokUser():
         """
         return self.user_id == user_id_to_check
 
-class TiktokPost():
+class TiktokPost:
     def __init__(self, user_id, post_desc, song, nb_likes, nb_comments, nb_shares):
         """
         Tiktok Post constructor
@@ -70,7 +70,7 @@ class TiktokPost():
         # later add each_comment as [] with each comment appended
 
 
-class TiktokScrape():
+class TiktokScrape:
     def __init__(self, url="https://www.tiktok.com/trending"):
         """
         Scraper constructor
