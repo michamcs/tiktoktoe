@@ -8,18 +8,22 @@ The following algorithm scrapes :
 
 Created in June 2020
 """
-
 # Imports
 import time
 import argparse
+import sqlite3
+import os
+import contextlib
 from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.support import expected_conditions as ec
 
+URL_TO_SCROLL = "https://www.tiktok.com/trending"
+DB_NAME = "tiktoktoe.db"
 
-class TiktokUser():
+class TiktokUser:
     def __init__(self, user_id, user_desc, nb_followings, nb_followers, nb_likes):
         """
         TiktokUser constructor
@@ -50,7 +54,7 @@ class TiktokUser():
         """
         return self.user_id == user_id_to_check
 
-class TiktokPost():
+class TiktokPost:
     def __init__(self, user_id, post_desc, song, nb_likes, nb_comments, nb_shares):
         """
         Tiktok Post constructor
@@ -67,11 +71,10 @@ class TiktokPost():
         self.likes = nb_likes
         self.comments = nb_comments
         self.shares = nb_shares
-        # later add each_comment as [] with each comment appended
 
 
-class TiktokScrape():
-    def __init__(self, url="https://www.tiktok.com/trending"):
+class TiktokScrape:
+    def __init__(self, flush_db, url=URL_TO_SCROLL):
         """
         Scraper constructor
         :param url: url to scrape
@@ -79,13 +82,28 @@ class TiktokScrape():
         """
         self.users = []
         self.posts = []
+        self.db_connection(flush_db)
         self.chrome_options = webdriver.ChromeOptions()
         # TODO add headless and set window size for the big scrapping
-        # self.chrome_options.add_argument("--headless")
-        # self.chrome_options.add_argument("window-size=1920,1080")
+        #self.chrome_options.add_argument("--headless")
+        self.chrome_options.add_argument("window-size=1920,1080")
         self.chrome_options.add_argument("user-agent='Applebot'")
         self.driver = webdriver.Chrome(r"./chromedriver", options=self.chrome_options)
         self.driver.get(url)
+
+    def db_connection(self, flush_db):
+        if flush_db:
+            if os.path.exists(DB_NAME):
+                os.remove(DB_NAME)
+            sql_file = open("tiktoktoe.sql")
+            sql_as_string = sql_file.read()
+
+        with contextlib.closing(sqlite3.connect(DB_NAME)) as con:  # auto-closes
+            with con:  # auto-commits
+                cur = con.cursor()
+                if flush_db:
+                    # Creating the tables
+                    cur.executescript(sql_as_string)
 
     def check_new_user(self, user_id_to_check):
         """
@@ -97,11 +115,12 @@ class TiktokScrape():
             return True, self.users.index(user_id_to_check)  # overcoming bug for first user at index 0
         return False, -1
 
-    def scroll(self, num_scrolls=3):
+    def scroll(self, print_logs=True, num_scrolls=3):
         """
         Scrolling over the page
-        :param num_scrolls: number of scrolls  # depends on the window size
-        :return: nothing
+        :param print_logs: print_logs flag
+        :param num_scrolls: number of scrolls
+        :return: Nothing
         """
         # Get scroll height
         last_height = self.driver.execute_script("return document.body.scrollHeight")
@@ -117,18 +136,22 @@ class TiktokScrape():
                 break  # infinite scroll, so this should never happen
             last_height = new_height
             num_scrolls -= 1
-            print(f"Scrolling for another {num_scrolls} times")
+            if print_logs:
+                print(f"Scrolling for another {num_scrolls} times")
 
-    def get_posts(self, scroll_profile=True):
+    def get_posts(self, print_logs=True, scroll_profile=True):
         """
-        scrapping post elements
-        :return: nothing
+        Scraîng post elements
+        :param print_logs: print_logs flag
+        :param scroll_profile: Number of scrolls
+        :return: Nothing
         """
         main_window = self.driver.current_window_handle
         items = self.driver.find_elements(By.CLASS_NAME, 'video-feed-item')
         i = 0
         for post in items:
-            print(f'looking at post {i}')
+            if print_logs:
+                print(f'looking at post {i}')
             i += 1
             # Picking post elements
             user_id = post.find_element_by_class_name('author-uniqueId').text
@@ -148,7 +171,7 @@ class TiktokScrape():
 
             if not user and scroll_profile:
                 user_index = self.get_users(user_id, main_window)
-            elif user and scroll_profile:
+            elif user and scroll_profile and print_logs:
                 print("This user has already been seen before.............................")
             # Appending post info to posts array
             self.posts.append(TiktokPost(user_index, post_desc, song, nb_likes, nb_comments, nb_shares))
@@ -161,10 +184,10 @@ class TiktokScrape():
         :return: the new length of the users array
         """
         self.driver.execute_script("window.open('http://www.tiktok.com/@{}', 'new_window')".format(user_id))
-        WebDriverWait(self.driver, 10).until(EC.number_of_windows_to_be(2))
+        WebDriverWait(self.driver, 10).until(ec.number_of_windows_to_be(2))
         self.driver.switch_to.window(self.driver.window_handles[1])
         try:
-            WebDriverWait(self.driver, 20).until(EC.presence_of_element_located((By.CLASS_NAME, "share-desc")))
+            WebDriverWait(self.driver, 20).until(ec.presence_of_element_located((By.CLASS_NAME, "share-desc")))
         except TimeoutException:
             self.driver.close()
             self.driver.switch_to.window(main_window)
@@ -192,20 +215,22 @@ class TiktokScrape():
         # closing the user page
         self.driver.close()
         self.driver.switch_to.window(main_window)
-        return len(self.users)-1
+        return len(self.users) - 1
 
 def define_parser():
     """settings for the parser"""
-    parser = argparse.ArgumentParser(description='Settings for the TikTok Scrapper')
-    parser.add_argument("scroll_profile", choices=['Y', 'N'])
-    parser.add_argument("number_of_scrolls", type=int)
+    parser = argparse.ArgumentParser(description='TikTok Scrapper')
+    parser.add_argument("-p", "--scrape_profile", action="store_true", help="Scrape the profile of each post")
+    parser.add_argument("-f", "--flush_db", action="store_true", help="Reinitialize the DB before scrapping")
+    parser.add_argument("-l", "--print_logs", action="store_true", help="Print logs while scrapping")
+    parser.add_argument("-s", "--scroll_nb", action="store", help="Number of scrolls", type=int)
     return parser.parse_args()
 
 def main():
     args = define_parser()
-    scrapping = TiktokScrape()
-    scrapping.scroll(args.number_of_scrolls)
-    scrapping.get_posts(args.scroll_profile == 'Y')
+    scrapping = TiktokScrape(args.flush_db)
+    scrapping.scroll(args.print_logs, args.number_of_scrolls)
+    scrapping.get_posts(args.print_logs, args.scrape_profile)
     print(f'Got {len(scrapping.posts)} posts')
     print(f'Got {len(scrapping.users)} users')
 

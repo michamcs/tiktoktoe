@@ -29,6 +29,10 @@ python3 tiktoktoe_scrapping.py
 ## 👨‍🎓 Classes
 <p align="center"><img src="images/class.jpeg"></p>
 
+
+## 👨‍🎓 SQL Database
+<p align="center"><img src="images/tiktoktoe_sql.png"></p>
+
 ## 🔌 Third Party Plugins
 
 * [Selenium](https://selenium-python.readthedocs.io/) - provides a simple API to write functional/acceptance tests using Selenium WebDriver.
