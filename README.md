@@ -23,7 +23,15 @@ pip install -r requirements.txt
 ## 🏃‍♂️  Usage
 
 ```bash
-python3 tiktoktoe_scrapping.py
+python3 tiktoktoe_scrapping.py [-h] [-p] [-f] [-l] [-he] [-s [SCROLL_NB]]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -p, --scrape_profile  Scrape the profile of each post
+  -f, --flush_db        Reinitialize the DB before scrapping
+  -l, --print_logs      Print logs while scrapping
+  -he, --headless       Scrape headless
+  -s [SCROLL_NB], --scroll_nb [SCROLL_NB] Number of scrolls
 ```
 
 ## 👨‍🎓 Classes
@@ -35,7 +43,8 @@ python3 tiktoktoe_scrapping.py
 
 ## 🔌 Third Party Plugins
 
-* [Selenium](https://selenium-python.readthedocs.io/) - provides a simple API to write functional/acceptance tests using Selenium WebDriver.
+* [Selenium](https://selenium-python.readthedocs.io/) - Provides a simple API to write functional/acceptance tests using Selenium WebDriver.
+* [SQLite3](https://docs.python.org/3/library/sqlite3.html) - Interface for SQLite databases.
 
 
 ## 📫 Posts
