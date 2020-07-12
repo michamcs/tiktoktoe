@@ -52,7 +52,7 @@ Explore the hidden metadata behind each post by scrapping from the most popular 
   - postID  
   - userID
   - Number of likes
-  - Nubmber of comments
+  - Number of comments
   - Number of shares
   - Post's text
   - Post's hashtags
@@ -65,7 +65,7 @@ Explore the hidden metadata behind each post by scrapping from the most popular 
 Explore the metadata of each user by storing their
   - userID
   - Numbers of users they're following
-  - Number of follwers
+  - Number of followers
   - Number of likes
   - Bio text
 <p align="center"><img src="images/tiktok1.jpg" width="60%"></p>
