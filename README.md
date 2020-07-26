@@ -4,6 +4,8 @@ TikTok scrapper in the scope of the TikTokToe project. First project of the Fell
 The following algorithm scrapes :<br/>
   • Posts in the TikTok trending page<br/>
   • User pages associated to each post<br/>
+  
+Moreover, it calls the twitter API per hashtag scrapped in TikThok posts
 
 ---
 
@@ -44,7 +46,7 @@ optional arguments:
 
 * [Selenium](https://selenium-python.readthedocs.io/) - Provides a simple API to write functional/acceptance tests using Selenium WebDriver.
 * [SQLite3](https://docs.python.org/3/library/sqlite3.html) - Interface for SQLite databases.
-
+* [Twitter API](https://developer.twitter.com/en) - Twitter API
 
 ## 📫 Posts
 Explore the hidden metadata behind each post by scrapping from the most popular posts the: 
