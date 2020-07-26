@@ -6,10 +6,11 @@ The following algorithm scrapes :
 • Posts in the TikTok trending page
 • User pages associated to each post
 
-Database class
+Database class, saving tiktok posts, users, hashtags, songs in an SQLite database
 
 Created in June 2020
 """
+
 # Imports
 import sqlite3
 import os
@@ -111,3 +112,35 @@ class TiktokDatabase:
                         (SELECT user_id FROM TikTokUsers WHERE user_name = ?))
                         """,
                         [hashs, user_name])
+
+    def get_hashtags(self):
+        """
+        Getting all the saved hashtags
+        :return: all the hashtags saved in our DB
+        """
+        with contextlib.closing(sqlite3.connect(self.db_name)) as con:  # auto-closes
+            with con:  # auto-commits
+                cur = con.cursor()
+                cur.execute('SELECT * FROM AllHashtags')
+                hashtags = cur.fetchall()
+        return hashtags
+
+
+    def save_tweet(self, hash_id, twitter_user, text, url):
+        """
+        Saving a tweet associated to an hashtag
+        :param hash_id: hashtag_id
+        :param twitter_user: twitter username
+        :param text: tweet text
+        :param url: tweet url
+        """
+        with contextlib.closing(sqlite3.connect(self.db_name)) as con:  # auto-closes
+            with con:  # auto-commits
+                cur = con.cursor()
+                cur.execute(
+                    """
+                    INSERT INTO Tweets 
+                    (hash_id, twitter_user, text, url) 
+                    VALUES (?, ?, ?, ?)
+                    """,
+                    [hash_id, twitter_user, text, url])

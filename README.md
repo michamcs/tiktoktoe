@@ -27,7 +27,6 @@ python3 tiktoktoe_scrapping.py [-h] [-p] [-f] [-l] [-he] [-s [SCROLL_NB]]
 
 optional arguments:
   -h, --help            show this help message and exit
-  -p, --scrape_profile  Scrape the profile of each post
   -f, --flush_db        Reinitialize the DB before scrapping
   -l, --print_logs      Print logs while scrapping
   -he, --headless       Scrape headless
@@ -35,7 +34,7 @@ optional arguments:
 ```
 
 ## 👨‍🎓 Classes
-<p align="center"><img src="images/class.jpeg"></p>
+<p align="center"><img src="images/class.png"></p>
 
 
 ## 👨‍🎓 SQL Database

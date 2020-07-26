@@ -51,3 +51,13 @@ CREATE TABLE `Songs` (
   FOREIGN KEY (post_id) REFERENCES TikTokPost(post_id),
   FOREIGN KEY (song_id) REFERENCES AllSongs(song_id)
 );
+
+CREATE TABLE `Tweets` (
+    `tweet_id` INTEGER PRIMARY KEY,
+    `hash_id` int,
+    `twitter_user` varchar(255),
+    `text` varchar(255),
+    `url` varchar(255),
+    FOREIGN KEY (hash_id) REFERENCES AllHashtags(hash_id)
+);
+
