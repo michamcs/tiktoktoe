@@ -391,3 +391,27 @@ INFO:root:Got 5 users
 INFO:root:Getting the tweets
 INFO:root:Getting all the hashtags
 INFO:root:Getting all the tweets and saving it to the database
+INFO:root:Scrolling for another 0 times
+INFO:root:looking at post 0
+INFO:root:user ofirelkayam saved
+INFO:root:Post 1 saved of ofirelkayam saved
+INFO:root:looking at post 1
+INFO:root:user billychka saved
+INFO:root:Post 2 saved of billychka saved
+INFO:root:looking at post 2
+INFO:root:user riner_moshe saved
+INFO:root:Post 3 saved of riner_moshe saved
+INFO:root:looking at post 3
+INFO:root:user meshiii12 saved
+INFO:root:Post 4 saved of meshiii12 saved
+INFO:root:looking at post 4
+INFO:root:user 3mr_taha1 saved
+INFO:root:Post 5 saved of 3mr_taha1 saved
+INFO:root:looking at post 5
+INFO:root:user harpreet_sdc saved
+INFO:root:Post 6 saved of harpreet_sdc saved
+INFO:root:Got 6 posts
+INFO:root:Got 6 users
+INFO:root:Getting the tweets
+INFO:root:Getting all the hashtags
+INFO:root:Getting all the tweets and saving it to the database
