@@ -2,9 +2,11 @@
 Authors: Michael Marcus & Tammuz Dubnov
 
 TikTok scrapper in the scope of the TikTokToe project. First project of the Fellows program of ITC
-The following algorithm scrapes :
+The following algorithm scrapes and save in an SQLite database :
 • Posts in the TikTok trending page
 • User pages associated to each post
+• Hashtags
+• Songs
 
 Created in June 2020
 """
@@ -22,6 +24,7 @@ from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from env.conf import URL_TO_SCROLL, LOG_FILE
 from database.tiktoktoe_saving import TiktokDatabase
+from twitter_api import TwitterCalls
 
 class TiktokUser:
     def __init__(self, user_id, user_desc, nb_followings, nb_followers, nb_likes):
@@ -83,6 +86,7 @@ class TiktokScrape:
         self.users = []
         self.posts = []
         self.db = TiktokDatabase(flush_db)
+        self.twitter_api = TwitterCalls()
         self.chrome_options = webdriver.ChromeOptions()
         if headless:
             self.chrome_options.add_argument("--headless")
@@ -217,6 +221,22 @@ class TiktokScrape:
         self.driver.switch_to.window(main_window)
         return len(self.users) - 1
 
+    def get_tweets(self, print_logs=True):
+        """
+        Getting 15 tweets per hashtag and saving it to the database
+        """
+        logging.info(f'Getting all the hashtags')
+        if print_logs:
+            print('Getting all the hashtags')
+        hashtags = self.db.get_hashtags()
+        logging.info(f'Getting all the tweets and saving it to the database')
+        if print_logs:
+            print('Getting all the tweets and saving it to the database')
+        for hashtag in hashtags:
+            tweets = self.twitter_api.query(hashtag[1])
+            for tweet in tweets:
+                self.db.save_tweet(hashtag[0], tweet[0], tweet[1], tweet[2])
+
 
 def define_parser():
     """settings for the parser"""
@@ -240,6 +260,9 @@ def main():
     print(f'Got {len(scrapping.users)} users')
     logging.info(f'Got {len(scrapping.posts)} posts')
     logging.info(f'Got {len(scrapping.users)} users')
+    print('Getting the tweets')
+    logging.info(f'Getting the tweets')
+    scrapping.get_tweets(args.print_logs)
 
 
 if __name__ == "__main__":

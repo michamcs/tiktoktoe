@@ -1,9 +1,23 @@
+"""
+Authors: Michael Marcus & Tammuz Dubnov
+
+TikTok scrapper in the scope of the TikTokToe project. First project of the Fellows program of ITC
+The following algorithm scrapes :
+• Posts in the TikTok trending page
+• User pages associated to each post
+
+Twitter_api class, calling the twitter api
+
+Created in June 2020
+"""
+# imports
 import base64
 import requests
 from env.conf import CLIENT_KEY, CLIENT_SECRET
 
 
-class twitter_calls:
+
+class TwitterCalls:
     def __init__(self):
         key_secret = '{}:{}'.format(CLIENT_KEY, CLIENT_SECRET).encode('ascii')
         b64_encoded_key = base64.b64encode(key_secret)
@@ -23,15 +37,20 @@ class twitter_calls:
         self.access_token = auth_resp.json()['access_token']
 
     def query(self, hashtag):
+        """
+        Queries the twitter api by hashtag
+        :param hashtag:Hashtag we want to query
+        :return:
+        """
         assert isinstance(hashtag, str), hashtag + " should be a string"
         search_headers = {
             'Authorization': 'Bearer {}'.format(self.access_token)
         }
 
         search_params = {
-            'q': hashtag,
+            'q': '#' + hashtag,
             'result_type': 'popular',
-            'count': 100, #limited to 15 by twitter
+            'count': 100,  # limited to 15 by twitter
             'lang': 'en'
         }
 
@@ -41,5 +60,10 @@ class twitter_calls:
         tweets = []
         for i in range(len(tweet_data['statuses'])):
             tweet_text = tweet_data['statuses'][i]['text'].split("https://")
-            tweets.append((tweet_data['statuses'][i]['user']['screen_name'],tweet_text[0],"https://"+tweet_text[1]))
+            try:
+                tweets.append(
+                    (tweet_data['statuses'][i]['user']['screen_name'], tweet_text[0], "https://"+tweet_text[1])
+                )
+            except IndexError:
+                tweets.append((tweet_data['statuses'][i]['user']['screen_name'], tweet_text[0], ""))
         return tweets
