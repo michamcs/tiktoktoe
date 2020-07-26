@@ -9,6 +9,7 @@ The following algorithm scrapes :
 Created in June 2020
 """
 # Imports
+import logging
 import time
 import argparse
 import sqlite3
@@ -19,7 +20,7 @@ from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
-from env.conf import URL_TO_SCROLL, DB_NAME
+from env.conf import URL_TO_SCROLL, LOG_FILE
 from database.tiktoktoe_saving import TiktokDatabase
 
 class TiktokUser:
@@ -121,6 +122,7 @@ class TiktokScrape:
                #break  # infinite scroll, so this should never happen
             last_height = new_height
             num_scrolls -= 1
+            logging.info(f"Scrolling for another {num_scrolls} times")
             if print_logs:
                 print(f"Scrolling for another {num_scrolls} times")
 
@@ -135,6 +137,7 @@ class TiktokScrape:
         items = self.driver.find_elements(By.CLASS_NAME, 'video-feed-item')
         i = 0
         for post in items:
+            logging.info(f'looking at post {i}')
             if print_logs:
                 print(f'looking at post {i}')
             i += 1
@@ -160,7 +163,12 @@ class TiktokScrape:
                 print("This user has already been seen before....")
             # Appending post info to posts array
             self.posts.append(TiktokPost(user_index, post_desc, song, nb_likes, nb_comments, nb_shares))
-            self.db.save_post(user_name, nb_likes, nb_shares, nb_comments, post_desc, song)
+            try:
+                self.db.save_post(user_name, nb_likes, nb_shares, nb_comments, post_desc, song)
+                logging.info(f'Post {i} saved of {user_name} saved')
+            except IndexError:
+                logging.error(f'Error saving Post {i} saved of {user_name} saved')
+
 
 
     def get_users(self, user_name, main_window):
@@ -198,7 +206,11 @@ class TiktokScrape:
 
         # Appending user info to user df
         self.users.append(TiktokUser(user_name, user_desc, nb_followings, nb_followers, nb_likes))
-        self.db.save_user(user_name, nb_followers, nb_likes, nb_followings, user_desc)
+        try:
+            self.db.save_user(user_name, nb_followers, nb_likes, nb_followings, user_desc)
+            logging.info(f'user {user_name} saved')
+        except IndexError:
+            logging.error(f'Error saving user {user_name}')
 
         # closing the user page
         self.driver.close()
@@ -208,7 +220,8 @@ class TiktokScrape:
 
 def define_parser():
     """settings for the parser"""
-    parser = argparse.ArgumentParser(description='TikTok Scrapper')
+    parser = argparse.ArgumentParser(description='TikTok Scrapper =>\
+                                    scrapping posts, users, songs, hashtags of the Tiktok trending page ')
     parser.add_argument("-f", "--flush_db", action="store_true", help="Reinitialize the DB before scrapping",
                         default=True)
     parser.add_argument("-l", "--print_logs", action="store_true", help="Print logs while scrapping")
@@ -218,12 +231,15 @@ def define_parser():
     return parser.parse_args()
 
 def main():
+    logging.basicConfig(filename=LOG_FILE, level=logging.INFO)
     args = define_parser()
     scrapping = TiktokScrape(args.flush_db, args.headless)
     scrapping.scroll(args.scroll_nb, args.print_logs)
     scrapping.get_posts(args.print_logs)
     print(f'Got {len(scrapping.posts)} posts')
     print(f'Got {len(scrapping.users)} users')
+    logging.info(f'Got {len(scrapping.posts)} posts')
+    logging.info(f'Got {len(scrapping.users)} users')
 
 
 if __name__ == "__main__":
