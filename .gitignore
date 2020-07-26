@@ -1,2 +1,3 @@
 # DB file
 *.db
+.DS_store

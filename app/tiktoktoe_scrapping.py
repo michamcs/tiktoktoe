@@ -20,6 +20,7 @@ from selenium.common.exceptions import NoSuchElementException, TimeoutException
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as ec
 from env.conf import URL_TO_SCROLL, DB_NAME
+from database.tiktoktoe_saving import TiktokDatabase
 
 class TiktokUser:
     def __init__(self, user_id, user_desc, nb_followings, nb_followers, nb_likes):
@@ -72,7 +73,7 @@ class TiktokPost:
 
 
 class TiktokScrape:
-    def __init__(self, flush_db, headless=False, url=URL_TO_SCROLL):
+    def __init__(self, flush_db=True, headless=False, url=URL_TO_SCROLL):
         """
         Scraper constructor
         :param url: url to scrape
@@ -80,7 +81,7 @@ class TiktokScrape:
         """
         self.users = []
         self.posts = []
-        self.db_connection(flush_db)
+        self.db = TiktokDatabase(flush_db)
         self.chrome_options = webdriver.ChromeOptions()
         if headless:
             self.chrome_options.add_argument("--headless")
@@ -88,24 +89,6 @@ class TiktokScrape:
         self.chrome_options.add_argument("user-agent='Applebot'")
         self.driver = webdriver.Chrome(r"./chromedriver", options=self.chrome_options)
         self.driver.get(url)
-
-    def db_connection(self, flush_db):
-        """
-        Instantiates the connectionn with the database
-        :param flush_db: flag to flush the database
-        """
-        if flush_db:
-            if os.path.exists(DB_NAME):
-                os.remove(DB_NAME)
-            sql_file = open("tiktoktoe.sql")
-            sql_as_string = sql_file.read()
-
-        with contextlib.closing(sqlite3.connect(DB_NAME)) as con:  # auto-closes
-            with con:  # auto-commits
-                cur = con.cursor()
-                if flush_db:
-                    # Creating the tables
-                    cur.executescript(sql_as_string)
 
     def check_new_user(self, user_id_to_check):
         """
@@ -177,47 +160,8 @@ class TiktokScrape:
                 print("This user has already been seen before....")
             # Appending post info to posts array
             self.posts.append(TiktokPost(user_index, post_desc, song, nb_likes, nb_comments, nb_shares))
-            self.save_post(user_name, nb_likes, nb_shares, nb_comments, post_desc, song)
+            self.db.save_post(user_name, nb_likes, nb_shares, nb_comments, post_desc, song)
 
-    def save_post(self, user_name, nb_likes, nb_shares, nb_comments, post_desc, song):
-        """
-        Saving post information
-        :param user_name: user name
-        :param nb_likes: number of post likes
-        :param nb_shares: number of shares
-        :param nb_comments: number of comments
-        :param post_desc: post description
-        :param song: post song
-        """
-        with contextlib.closing(sqlite3.connect(DB_NAME)) as con:  # auto-closes
-            with con:  # auto-commits
-                cur = con.cursor()
-                cur.execute('SELECT user_id FROM TikTokUsers WHERE user_name = ?', [user_name])
-                temp_user_id = cur.fetchall()[-1][0]
-                cur.execute(
-                    "INSERT INTO TikTokPost (user_id, number_of_likes, number_of_share, number_of_comments, post_text) VALUES (?, ?, ?, ?, ?)",
-                    [temp_user_id, nb_likes, nb_shares, nb_comments, post_desc])
-
-                post_id = cur.lastrowid
-                hashtags = [post.split(" ")[0] for post in post_desc.split("#")[1:]]
-                for hashs in hashtags:
-                    cur.execute('SELECT count(*) FROM AllHashtags WHERE hashtag = "{}"'.format(hashs))
-                    if cur.fetchall()[-1][0] == 0:
-                        cur.execute("INSERT INTO AllHashtags (hashtag) VALUES (?)", [hashs])
-                    cur.execute(
-                        'INSERT INTO PostHashtags (hash_id, post_id) VALUES ((SELECT hash_id FROM AllHashtags WHERE hashtag = ?), ?)',
-                        [hashs, post_id])
-
-                cur.execute('SELECT COUNT(*) FROM AllSongs WHERE song_name = ?', [song])
-                if cur.fetchall()[-1][0] == 0:
-                    cur.execute('INSERT INTO AllSongs (song_name) VALUES (?)', [song])
-                    song_id = cur.lastrowid
-                else:
-                    cur.execute('SELECT song_id FROM AllSongs WHERE song_name = "{}"'.format(song))
-                    song_id = cur.fetchall()[-1][0]
-                cur.execute(
-                    "INSERT INTO Songs (post_id, song_id) VALUES (?, ?)",
-                    [post_id, song_id])
 
     def get_users(self, user_name, main_window):
         """
@@ -254,50 +198,19 @@ class TiktokScrape:
 
         # Appending user info to user df
         self.users.append(TiktokUser(user_name, user_desc, nb_followings, nb_followers, nb_likes))
-        self.save_user(user_name, nb_followers, nb_likes, nb_followings, user_desc)
+        self.db.save_user(user_name, nb_followers, nb_likes, nb_followings, user_desc)
 
         # closing the user page
         self.driver.close()
         self.driver.switch_to.window(main_window)
         return len(self.users) - 1
 
-    def save_user(self, user_name, nb_followers, nb_likes, nb_followings, user_desc):
-        """
-        Saving users information inn the database
-        :param user_name: user name
-        :param nb_followers: number of followers
-        :param nb_likes: number of likes
-        :param nb_followings: number of following users
-        :param user_desc: user bio
-        """
-        with contextlib.closing(sqlite3.connect(DB_NAME)) as con:  # auto-closes
-            with con:  # auto-commits
-                cur = con.cursor()
-                cur.execute(
-                    """
-                    INSERT INTO TikTokUsers 
-                    (user_name, number_of_followers, number_of_following, number_of_likes, bio_text) 
-                    VALUES (?, ?, ?, ?, ?)
-                    """,
-                    [user_name, nb_followers, nb_followings, nb_likes, user_desc])
-                hashtags = [post.split(" ")[0] for post in user_desc.split("#")[1:]]
-                for hashs in hashtags:
-                    cur.execute('SELECT count(*) FROM AllHashtags WHERE hashtag = "{}"'.format(hashs))
-                    if cur.fetchall()[-1][0] == 0:
-                        cur.execute("INSERT INTO AllHashtags (hashtag) VALUES (?)", [hashs])
-                    cur.execute(
-                        """
-                        INSERT INTO UserBioHashtags (hash_id, user_id)
-                        VALUES ((SELECT hash_id FROM AllHashtags WHERE hashtag = ?),
-                        (SELECT user_id FROM TikTokUsers WHERE user_name = ?))
-                        """,
-                        [hashs, user_name])
 
 def define_parser():
     """settings for the parser"""
     parser = argparse.ArgumentParser(description='TikTok Scrapper')
-    parser.add_argument("-p", "--scrape_profile", action="store_true", help="Scrape the profile of each post")
-    parser.add_argument("-f", "--flush_db", action="store_true", help="Reinitialize the DB before scrapping")
+    parser.add_argument("-f", "--flush_db", action="store_true", help="Reinitialize the DB before scrapping",
+                        default=True)
     parser.add_argument("-l", "--print_logs", action="store_true", help="Print logs while scrapping")
     parser.add_argument("-he", "--headless", action="store_true", help="Scrape headless")
     parser.add_argument("-s", "--scroll_nb", action="store", nargs="?", const=3, default=3,
@@ -308,7 +221,7 @@ def main():
     args = define_parser()
     scrapping = TiktokScrape(args.flush_db, args.headless)
     scrapping.scroll(args.scroll_nb, args.print_logs)
-    scrapping.get_posts(args.print_logs, args.scrape_profile)
+    scrapping.get_posts(args.print_logs)
     print(f'Got {len(scrapping.posts)} posts')
     print(f'Got {len(scrapping.users)} users')
 
