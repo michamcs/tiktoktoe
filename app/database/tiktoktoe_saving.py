@@ -44,16 +44,13 @@ class TiktokDatabase:
                     # Creating the tables
                     cur.executescript(sql_as_string)
         """
-        try:
-            self.connection = pymysql.connect(host=DB['host'],
-                                              user=DB['user'],
-                                              password=DB['password'],
-                                              # db=DB['name'],
-                                              charset='utf8mb4',
-                                              cursorclass=pymysql.cursors.DictCursor)
-            self.cursor = self.connection.cursor()
-        except pymysql.err.InternalError:
-            print('Internal error')
+        self.connection = pymysql.connect(host=DB['host'],
+                                          user=DB['user'],
+                                          password=DB['password'],
+                                          # db=DB['name'],
+                                          charset='utf8mb4',
+                                          cursorclass=pymysql.cursors.DictCursor)
+        self.cursor = self.connection.cursor()
         if flush_db:
             sql_file = open(self.sql_file)
             sql_as_string = sql_file.read()
