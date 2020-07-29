@@ -13,3 +13,10 @@ LOG_FILE = 'tiktoktoe_logs.log'
 CLIENT_KEY = 'nOy0Wqk6SnvCCUl4QRcfFvK98'
 CLIENT_SECRET = 'LqkyT2VKSDENhI9LPs2xojNoEfgINGDmV4Sb8IQCYGI8Bct1B3'
 CLIENT_SECRET = 'LqkyT2VKSDENhI9LPs2xojNoEfgINGDmV4Sb8IQCYGI8Bct1B3'
+DB = {
+    'host': 'localhost',
+    'user': 'root',
+    'password': 'password',
+    'name': 'tiktoktoe',
+    'file': 'tiktoktoe.sql'
+}
