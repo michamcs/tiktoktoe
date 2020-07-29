@@ -51,6 +51,7 @@ class TiktokDatabase:
                                           charset='utf8mb4',
                                           cursorclass=pymysql.cursors.DictCursor)
         self.cursor = self.connection.cursor()
+        self.cursor.execute("SET NAMES utf8mb4;")
         if flush_db:
             sql_file = open(self.sql_file)
             sql_as_string = sql_file.read()
@@ -61,6 +62,7 @@ class TiktokDatabase:
             ret = ret[:-1]
             for req in ret:
                 self.cursor.execute(req + ";")
+            self.cursor.execute("ALTER DATABASE tiktoktoe CHARACTER SET = utf8mb4 COLLATE = utf8mb4_general_ci;")
         self.connection.commit()
 
     def save_post(self, user_name, nb_likes, nb_shares, nb_comments, post_desc, song):
