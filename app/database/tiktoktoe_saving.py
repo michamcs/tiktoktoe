@@ -56,7 +56,7 @@ class TiktokDatabase:
             sql_file = open(self.sql_file)
             sql_as_string = sql_file.read()
             self.cursor.execute("DROP DATABASE {}".format(DB['name']))
-            self.cursor.execute("CREATE DATABASE {}".format(DB['name']))
+            self.cursor.execute("CREATE DATABASE {} CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci;".format(DB['name']))
             self.cursor.execute("use {}".format(DB['name']))
             ret = sql_as_string.split(';')
             ret = ret[:-1]
