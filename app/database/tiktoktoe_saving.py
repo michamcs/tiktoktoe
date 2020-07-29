@@ -184,6 +184,13 @@ class TiktokDatabase:
                 to_cast += "00000"
             else:
                 to_cast += "000000"
+        if to_cast[-1] == 'B':
+            to_cast = to_cast[:-1]
+            if "." in to_cast:
+                to_cast = to_cast.replace(".", "")
+                to_cast += "00000000"
+            else:
+                to_cast += "000000000"
         return int(to_cast)
 
 
