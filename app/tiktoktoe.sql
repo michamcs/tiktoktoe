@@ -1,18 +1,18 @@
 CREATE TABLE TikTokUsers (
   user_id INT PRIMARY KEY AUTO_INCREMENT,
   user_name VARCHAR(255),
-  number_of_followers INT,
-  number_of_following INT,
-  number_of_likes INT,
+  number_of_followers BIGINT,
+  number_of_following BIGINT,
+  number_of_likes BIGINT,
   bio_text VARCHAR(255)
 );
 
 CREATE TABLE TikTokPost (
   post_id INT PRIMARY KEY AUTO_INCREMENT,
   user_id INT,
-  number_of_likes INT,
-  number_of_share INT,
-  number_of_comments INT,
+  number_of_likes BIGINT,
+  number_of_share BIGINT,
+  number_of_comments BIGINT,
   post_text VARCHAR(255),
   url VARCHAR(255),
   FOREIGN KEY (user_id) REFERENCES TikTokUsers(user_id)
