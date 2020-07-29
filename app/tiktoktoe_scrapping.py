@@ -233,9 +233,9 @@ class TiktokScrape:
         if print_logs:
             print('Getting all the tweets and saving it to the database')
         for hashtag in hashtags:
-            tweets = self.twitter_api.query(hashtag[1])
+            tweets = self.twitter_api.query(hashtag['hashtag'])
             for tweet in tweets:
-                self.db.save_tweet(hashtag[0], tweet[0], tweet[1], tweet[2])
+                self.db.save_tweet(hashtag['hash_id'], tweet[0], tweet[1], tweet[2])
 
 
 def define_parser():

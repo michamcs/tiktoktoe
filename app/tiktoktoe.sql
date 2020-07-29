@@ -1,63 +1,62 @@
-CREATE TABLE `TikTokUsers` (
-  `user_id` INTEGER PRIMARY KEY,
-  `user_name` varchar(255),
-  `number_of_followers` int,
-  `number_of_following` int,
-  `number_of_likes` int,
-  `bio_text` varchar(255)
+CREATE TABLE TikTokUsers (
+  user_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_name VARCHAR(255),
+  number_of_followers INT,
+  number_of_following INT,
+  number_of_likes INT,
+  bio_text VARCHAR(255)
 );
 
-CREATE TABLE `TikTokPost` (
-  `post_id` INTEGER PRIMARY KEY,
-  `user_id` int,
-  `number_of_likes` int,
-  `number_of_share` int,
-  `number_of_comments` int,
-  `post_text` varchar(255),
-  `url` varchar(255),
+CREATE TABLE TikTokPost (
+  post_id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT,
+  number_of_likes INT,
+  number_of_share INT,
+  number_of_comments INT,
+  post_text VARCHAR(255),
+  url VARCHAR(255),
   FOREIGN KEY (user_id) REFERENCES TikTokUsers(user_id)
 );
 
-CREATE TABLE `AllHashtags` (
-  `hash_id` INTEGER PRIMARY KEY,
-  `hashtag` varchar(255)
+CREATE TABLE AllHashtags (
+  hash_id INT PRIMARY KEY AUTO_INCREMENT,
+  hashtag VARCHAR(255)
 );
 
-CREATE TABLE `PostHashtags` (
-  `id` INTEGER PRIMARY KEY,
-  `post_id` varchar(255),
-  `hash_id` varchar(255),
+CREATE TABLE PostHashtags (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  post_id INT,
+  hash_id INT,
   FOREIGN KEY (post_id) REFERENCES TikTokPost(post_id),
   FOREIGN KEY (hash_id) REFERENCES AllHashtags(hash_id)
 );
 
-CREATE TABLE `UserBioHashtags` (
-  `id` INTEGER PRIMARY KEY,
-  `user_id` varchar(255),
-  `hash_id` varchar(255),
+CREATE TABLE UserBioHashtags (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  user_id INT,
+  hash_id INT,
   FOREIGN KEY (user_id) REFERENCES TikTokUsers(user_id),
   FOREIGN KEY (hash_id) REFERENCES AllHashtags(hash_id)
 );
 
-CREATE TABLE `AllSongs` (
-  `song_id` INTEGER PRIMARY KEY,
-  `song_name` varchar(255)
+CREATE TABLE AllSongs (
+  song_id INT PRIMARY KEY AUTO_INCREMENT,
+  song_name VARCHAR(255)
 );
 
-CREATE TABLE `Songs` (
-  `id` INTEGER PRIMARY KEY,
-  `post_id` int,
-  `song_id` int,
+CREATE TABLE Songs (
+  id INT PRIMARY KEY AUTO_INCREMENT,
+  post_id INT,
+  song_id INT,
   FOREIGN KEY (post_id) REFERENCES TikTokPost(post_id),
   FOREIGN KEY (song_id) REFERENCES AllSongs(song_id)
 );
 
-CREATE TABLE `Tweets` (
-    `tweet_id` INTEGER PRIMARY KEY,
-    `hash_id` int,
-    `twitter_user` varchar(255),
-    `text` varchar(255),
-    `url` varchar(255),
+CREATE TABLE Tweets (
+    tweet_id INT PRIMARY KEY AUTO_INCREMENT,
+    hash_id INT,
+    twitter_user VARCHAR(255),
+    text VARCHAR(255),
+    url VARCHAR(255),
     FOREIGN KEY (hash_id) REFERENCES AllHashtags(hash_id)
 );
-
