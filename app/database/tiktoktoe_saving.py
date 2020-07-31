@@ -55,7 +55,10 @@ class TiktokDatabase:
         if flush_db:
             sql_file = open(self.sql_file)
             sql_as_string = sql_file.read()
-            self.cursor.execute("DROP DATABASE {}".format(DB['name']))
+            try:
+                self.cursor.execute("DROP DATABASE {}".format(DB['name']))
+            except pymysql.err.InternalError:
+                print('DB doesn\'t exist')
             self.cursor.execute("CREATE DATABASE {} CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;".format(DB['name']))
             self.cursor.execute("use {}".format(DB['name']))
             ret = sql_as_string.split(';')
