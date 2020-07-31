@@ -58,12 +58,15 @@ class TwitterCalls:
         search_resp = requests.get(search_url, headers=search_headers, params=search_params)
         tweet_data = search_resp.json()
         tweets = []
-        for i in range(len(tweet_data['statuses'])):
-            tweet_text = tweet_data['statuses'][i]['text'].split("https://")
-            try:
-                tweets.append(
-                    (tweet_data['statuses'][i]['user']['screen_name'], tweet_text[0], "https://"+tweet_text[1])
-                )
-            except IndexError:
-                tweets.append((tweet_data['statuses'][i]['user']['screen_name'], tweet_text[0], ""))
+        try:
+            for i in range(len(tweet_data['statuses'])):
+                tweet_text = tweet_data['statuses'][i]['text'].split("https://")
+                try:
+                    tweets.append(
+                        (tweet_data['statuses'][i]['user']['screen_name'], tweet_text[0], "https://"+tweet_text[1])
+                    )
+                except IndexError:
+                    tweets.append((tweet_data['statuses'][i]['user']['screen_name'], tweet_text[0], ""))
+        except KeyError:
+            tweets = []
         return tweets
