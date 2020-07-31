@@ -138,8 +138,8 @@ class TiktokDatabase:
             self.cursor.execute(
                 """
                 INSERT INTO UserBioHashtags (hash_id, user_id)
-                VALUES ((SELECT hash_id FROM AllHashtags WHERE hashtag = ?),
-                (SELECT user_id FROM TikTokUsers WHERE user_name = ?))
+                VALUES ((SELECT hash_id FROM AllHashtags WHERE hashtag = %s),
+                (SELECT user_id FROM TikTokUsers WHERE user_name = %s))
                 """,
                 [hashs, user_name])
             self.connection.commit()
