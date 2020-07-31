@@ -68,5 +68,6 @@ class TwitterCalls:
                 except IndexError:
                     tweets.append((tweet_data['statuses'][i]['user']['screen_name'], tweet_text[0], ""))
         except KeyError:
+            print('TWEET ERROR')
             tweets = []
         return tweets
