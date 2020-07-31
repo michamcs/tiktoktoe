@@ -132,7 +132,7 @@ class TiktokDatabase:
         hashtags = [post.split(" ")[0] for post in user_desc.split("#")[1:]]
         for hashs in hashtags:
             self.cursor.execute('SELECT count(*) FROM AllHashtags WHERE hashtag = "{}"'.format(hashs))
-            if self.cursor.fetchall()[-1][0] == 0:
+            if self.cursor.fetchall()[0]['count(*)'] == 0:
                 self.cursor.execute("INSERT INTO AllHashtags (hashtag) VALUES (?)", [hashs])
                 self.connection.commit()
             self.cursor.execute(
