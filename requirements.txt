@@ -3,7 +3,7 @@ geographiclib==1.50
 geopy==1.22.0
 kiwisolver==1.2.0
 matplotlib==3.2.1
-numpy==1.18.5
+numpy==1.22.0
 pandas==1.0.4
 PyMySQL==0.9.3
 pyparsing==2.4.7
